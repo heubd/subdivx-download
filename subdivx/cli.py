@@ -109,6 +109,8 @@ def main():
                         default=0, help="skip from head")
     parser.add_argument('--force', '-f', action='store_true',
                         default=False, help="override existing file")
+    parser.add_argument('--recursive', '-r', action='store_true',
+                        default=False, help="recursive search")
     args = parser.parse_args()
     lib.setup_logger(lib.LOGGER_LEVEL)
 
@@ -117,7 +119,7 @@ def main():
         console.setFormatter(lib.LOGGER_FORMATTER)
         lib.logger.addHandler(console)
 
-    cursor = FileFinder(args.path, with_extension=_extensions)
+    cursor = FileFinder(args.path, with_extension=_extensions, recursive=args.recursive)
 
     for filepath in cursor.findFiles():
         # skip if a subtitle for this file exists
