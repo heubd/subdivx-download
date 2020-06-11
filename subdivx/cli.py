@@ -97,7 +97,8 @@ def subtitle_renamer(filepath):
             # only apply to subtitles
             continue
         filename = extract_name(filepath)
-        os.rename(new_file, filename + '.srt')
+        subtitle_old_name = os.path.join(dirpath, new_file)
+        os.rename(subtitle_old_name, filename + '.srt')
 
 
 def main():
@@ -144,7 +145,7 @@ def main():
             raise
 
         with subtitle_renamer(filepath):
-            lib.get_subtitle(url, 'temp__' + filename )
+            lib.get_subtitle(url, filepath)
 
 
 if __name__ == '__main__':

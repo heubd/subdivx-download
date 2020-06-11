@@ -114,7 +114,7 @@ def get_subtitle(url, path):
         try:
             import subprocess
             #extract all .srt in the rared file
-            ret_code = subprocess.call(['unrar', 'e', '-n*srt', rar_path])
+            ret_code = subprocess.call(['unrar', 'e', '-n*srt', rar_path, os.path.dirname(path)])
             if ret_code == 0:
                 logger.info('Unpacking rared subtitle to %s' % os.path.dirname(path))
                 os.remove(rar_path)
