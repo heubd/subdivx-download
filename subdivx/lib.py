@@ -40,7 +40,7 @@ def setup_logger(level):
     logger.setLevel(level)
 
 
-def get_subtitle_url(title, number, metadata, skip=0, depth=1):
+def get_subtitle_url(title, number, metadata, skip=0, best=1):
     buscar = f"{title} {number}"
     params = {"accion": 5,
      "subtitulos": 1,
@@ -83,11 +83,11 @@ def get_subtitle_url(title, number, metadata, skip=0, depth=1):
 
     # get subtitle page
     number_of_results = len(results)
-    if number_of_results >= depth:
-        url = results[depth-1][0][1]
+    if number_of_results >= best:
+        url = results[best-1][0][1]
     else:
         url = results[number_of_results-1][0][1]
-        logger.info(f"depth: {depth}, is greater than the number of results: {number_of_results}, downloading the last")
+        logger.info(f"best: {best}, is greater than the number of results: {number_of_results}, downloading the last")
 
     logger.info(f"Getting from {url}")
     page = requests.get(url).text

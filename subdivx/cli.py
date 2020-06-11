@@ -120,7 +120,7 @@ def main():
                         default=0, help="skip from head")
     parser.add_argument('--force', '-f', action='store_true',
                         default=False, help="override existing file")
-    parser.add_argument('--depth', '-d', default=1, type=check_positive,
+    parser.add_argument('--best', '-b', default=1, type=check_positive,
             help="download the x-best subtitle (use with --force if subtitle exists)")
     args = parser.parse_args()
     lib.setup_logger(lib.LOGGER_LEVEL)
@@ -152,7 +152,7 @@ def main():
                 info["title"], number,
                 metadata,
                 args.skip,
-                args.depth)
+                args.best)
         except lib.NoResultsError as e:
             lib.logger.error(e.message)
             raise
