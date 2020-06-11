@@ -40,7 +40,7 @@ def setup_logger(level):
     logger.setLevel(level)
 
 
-def get_subtitle_url(title, number, metadata, skip=0):
+def get_subtitle_url(title, number, metadata, skip=0, depth=1):
     buscar = f"{title} {number}"
     params = {"accion": 5,
      "subtitulos": 1,
@@ -82,7 +82,13 @@ def get_subtitle_url(title, number, metadata, skip=0):
     results = sorted(zip(descriptions.items(), scores), key=lambda item: item[1], reverse=True)
 
     # get subtitle page
-    url = results[0][0][1]
+    number_of_results = len(results)
+    if number_of_results >= depth:
+        url = results[depth-1][0][1]
+    else:
+        url = results[number_of_results-1][0][1]
+        logger.info(f"depth: {depth}, is greater than the number of results: {number_of_results}, downloading the last")
+
     logger.info(f"Getting from {url}")
     page = requests.get(url).text
     soup = BeautifulSoup(page, 'html5lib')

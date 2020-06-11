@@ -100,6 +100,17 @@ def subtitle_renamer(filepath):
         os.rename(new_file, filename + '.srt')
 
 
+def check_positive(value):
+    try:
+        ivalue = int(value)
+        if ivalue <= 0:
+            raise argparse.ArgumentTypeError("%s is an invalid positive int value" % value)
+    except:
+        raise argparse.ArgumentTypeError("invalid int value: %s" % value)
+
+    return ivalue
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('path', type=str,
@@ -109,6 +120,8 @@ def main():
                         default=0, help="skip from head")
     parser.add_argument('--force', '-f', action='store_true',
                         default=False, help="override existing file")
+    parser.add_argument('--depth', '-d', default=1, type=check_positive,
+            help="download the x-best subtitle (use with --force if subtitle exists)")
     args = parser.parse_args()
     lib.setup_logger(lib.LOGGER_LEVEL)
 
@@ -138,7 +151,8 @@ def main():
             url = lib.get_subtitle_url(
                 info["title"], number,
                 metadata,
-                args.skip)
+                args.skip,
+                args.depth)
         except lib.NoResultsError as e:
             lib.logger.error(e.message)
             raise
